@@ -52,3 +52,4 @@ app.use('/api/relatorio', relatorioRoutes);
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
+module.exports = app;
