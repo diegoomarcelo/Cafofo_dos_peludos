@@ -49,7 +49,12 @@ app.use('/api/pedidos', pedidosRoutes);
 // Rota do relatório com JOIN.
 app.use('/api/relatorio', relatorioRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+// Só abre o servidor quando rodamos: node server.js
+// Quando o Jest importar esse arquivo, ele não abre a porta 3001.
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+  });
+}
+
 module.exports = app;
