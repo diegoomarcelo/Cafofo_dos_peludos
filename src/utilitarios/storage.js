@@ -6,9 +6,6 @@ export const CHAVES_STORAGE = {
   IMAGENS_PELUDOS: 'cafofo_imagens_peludos',
 };
 
-// Chave antiga usada antes em alguns arquivos.
-// Ela fica aqui só para não perder imagens que já foram salvas nos testes.
-const CHAVE_ANTIGA_IMAGENS_PELUDOS = 'imagensPeludos';
 
 export const IMAGENS_FIXAS_PELUDOS = {
   1: '/img/peludos/peludo1.jpg',
@@ -35,14 +32,14 @@ export const IMAGENS_FIXAS_PELUDOS = {
 
 export function buscarDadosLocais(chave, valorPadrao = null) {
   try {
-    const dados = localStorage.getItem(chave);
+    const dados = localStorage.getItem(chave); //Aqui ele procura no localStorage se existe algo salvo naquela chave.
 
     if (!dados) {
       return valorPadrao;
     }
 
     return JSON.parse(dados);
-  } catch (error) {
+  } catch (error) { //Evita que aplicação quebre se tiver algum dado invalido 
     return valorPadrao;
   }
 }
@@ -56,23 +53,25 @@ export function removerDadosLocais(chave) {
 }
 
 export function buscarImagensPeludos() {
-  const imagensAntigas = buscarDadosLocais(CHAVE_ANTIGA_IMAGENS_PELUDOS, {});
-  const imagensNovas = buscarDadosLocais(CHAVES_STORAGE.IMAGENS_PELUDOS, {});
-
-  return {
-    ...imagensAntigas,
-    ...imagensNovas,
-  };
+  return buscarDadosLocais(CHAVES_STORAGE.IMAGENS_PELUDOS, {});
 }
 
 export function obterImagemPeludo(id) {
   const imagensSalvas = buscarImagensPeludos();
 
-  return (
-    imagensSalvas[id] ||
-    IMAGENS_FIXAS_PELUDOS[id] ||
-    '/img/peludos/peludo1.jpg'
-  );
+  const imagemSalva = imagensSalvas[id];
+
+  if (imagemSalva) {
+    return imagemSalva;
+  }
+
+  const imagemFixa = IMAGENS_FIXAS_PELUDOS[id];
+
+  if (imagemFixa) {
+    return imagemFixa;
+  }
+
+  return '/img/peludos/peludo1.jpg';
 }
 
 export function salvarImagemPeludo(id, imagem) {
@@ -84,12 +83,9 @@ export function salvarImagemPeludo(id, imagem) {
 }
 
 export function removerImagemPeludo(id) {
-  const imagensNovas = buscarDadosLocais(CHAVES_STORAGE.IMAGENS_PELUDOS, {});
-  const imagensAntigas = buscarDadosLocais(CHAVE_ANTIGA_IMAGENS_PELUDOS, {});
+  const imagensSalvas = buscarImagensPeludos();
 
-  delete imagensNovas[id];
-  delete imagensAntigas[id];
+  delete imagensSalvas[id];
 
-  salvarDadosLocais(CHAVES_STORAGE.IMAGENS_PELUDOS, imagensNovas);
-  salvarDadosLocais(CHAVE_ANTIGA_IMAGENS_PELUDOS, imagensAntigas);
+  salvarDadosLocais(CHAVES_STORAGE.IMAGENS_PELUDOS, imagensSalvas);
 }
