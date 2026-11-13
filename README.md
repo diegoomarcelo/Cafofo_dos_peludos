@@ -1,75 +1,79 @@
-# 🐾 Cafofo dos Peludos
+<h1 align="center">🐾 Cafofo dos Peludos</h1>
 
-Aplicação web **full stack** para gerenciamento de adoções de animais, com páginas públicas para visitantes e uma área administrativa protegida por login para gerenciar peludos, tutores e solicitações de adoção.
+<p align="center">
+  <b>Aplicação full stack para gestão de adoções de animais: site público para adotantes e painel administrativo para a equipe.</b>
+</p>
 
-Projeto desenvolvido para a **Avaliação N2 da disciplina de Programação Web** (Ciência da Computação — UCB).
+<p align="center">
+  <img src="https://img.shields.io/badge/status-concluído-2ea44f?style=flat-square" alt="Status">
+  <img src="https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB" alt="React">
+  <img src="https://img.shields.io/badge/Node.js-Express-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js + Express">
+  <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white" alt="MySQL">
+  <img src="https://img.shields.io/badge/testes-7_integração_+_4_E2E-C21325?style=flat-square&logo=jest&logoColor=white" alt="Testes">
+</p>
 
-![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-Express-339933?logo=node.js&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-8-4479A1?logo=mysql&logoColor=white)
-![Jest](https://img.shields.io/badge/Jest-Supertest-C21325?logo=jest&logoColor=white)
-![Cypress](https://img.shields.io/badge/Cypress-E2E-69D3A7?logo=cypress&logoColor=white)
-
----
-
-## Destaques
-
-- **Três CRUDs completos** (peludos, tutores e solicitações de adoção) com filtros de busca.
-- **API REST** em Node.js/Express com banco MySQL relacional (chaves estrangeiras entre tutores, peludos e pedidos).
-- **Dashboard** com indicadores de solicitações por status e **relatório** com dados relacionados entre as entidades (JOIN).
-- **Rotas administrativas protegidas** por login, com controle de sessão e logout.
-- **Testes automatizados** de integração (Jest + Supertest) e de sistema E2E (Cypress), aplicando técnicas de partição de equivalência e análise de valor-limite.
+<p align="center">
+  <a href="#-como-rodar-localmente">Rodar localmente</a> ·
+  <a href="#-testes">Testes</a> ·
+  <a href="#-decisões-técnicas">Decisões técnicas</a>
+</p>
 
 ---
 
-## Tecnologias utilizadas
+## 🎯 O problema
 
-| Camada | Tecnologias |
-|---|---|
-| Front-end | React, React Router DOM, JavaScript, CSS, Bootstrap |
-| Back-end | Node.js, Express, mysql2, cors, dotenv |
-| Banco de dados | MySQL |
-| Testes | Jest, Supertest, Cypress |
+ONGs e lares temporários costumam controlar animais, interessados e pedidos de adoção em planilhas ou mensagens soltas. Fica difícil saber **quem pediu qual animal, em que status está cada pedido** e quais animais ainda estão disponíveis.
 
----
+> Projeto da **Avaliação N2 de Programação Web** (Ciência da Computação, UCB).
 
-## Funcionalidades
+## ✅ A solução
 
-### Área pública
+Uma aplicação com **API REST em Node.js/Express e banco MySQL relacional**, consumida por um front-end React com duas áreas:
 
-| Rota | Descrição |
-|---|---|
-| `/` e `/home` | Página inicial |
-| `/peludos` | Peludos disponíveis, com envio de interesse por adoção |
-| `/como-adotar` | Passo a passo da adoção |
-| `/feiras` | Feiras de adoção |
-| `/faq` | Perguntas frequentes |
-| `/login` | Acesso à área administrativa |
+- **Área pública:** lista os peludos disponíveis, explica como adotar, divulga feiras de adoção e recebe o interesse do visitante.
+- **Área administrativa (com login):** dashboard de solicitações por status, três CRUDs completos com filtros e um relatório que cruza tutor, peludo e pedido.
 
-### Área administrativa (protegida por login)
+**Principais funcionalidades**
 
-| Rota | Funcionalidades |
-|---|---|
-| `/dashboard` | Resumo das solicitações, contagem por status e solicitações recentes |
-| `/pets` | CRUD de peludos, com filtros por busca, tipo e status |
-| `/tutores` | CRUD de tutores/interessados, com filtros por busca e cidade |
-| `/solicitacoes` | CRUD de solicitações de adoção (relaciona tutor e peludo), com edição de status e filtros |
-| `/relatorio` | Relatório com tutor, peludo, data da solicitação, status e observações |
+- CRUD de **peludos** (filtros por busca, tipo e status), **tutores** (busca e cidade) e **solicitações de adoção** (edição de status).
+- **Dashboard** com contagem de solicitações por status e pedidos recentes.
+- **Relatório** que relaciona as três entidades via `JOIN` no MySQL.
+- **Rotas administrativas protegidas** (`PrivateRoute`), com sessão e logout.
 
-**Login:** simulado no front-end, com validação de campos obrigatórios, controle de sessão via `localStorage`, logout e proteção das rotas administrativas (`PrivateRoute`).
+## 📸 Demonstração
 
-Credenciais de teste:
+<!-- Adicione prints em docs/img/ e descomente a tabela abaixo. Sugestão: home pública, dashboard e relatório.
+| Área pública | Dashboard | Relatório |
+|---|---|---|
+| ![Home](docs/img/home.png) | ![Dashboard](docs/img/dashboard.png) | ![Relatório](docs/img/relatorio.png) |
+-->
+🎬 *Prints e GIF da aplicação em breve.*
 
-```txt
-E-mail: teste@cafofo.com
-Senha: 123456
+Credenciais de teste da área administrativa: `teste@cafofo.com` / `123456`
+
+## 🛠️ Tecnologias
+
+| Camada | Tecnologia | Por que escolhi |
+|---|---|---|
+| Front-end | React + React Router DOM | Componentes reaproveitáveis (Layout, Navbar) e rotas protegidas para separar a área pública da administrativa. |
+| Estilo | Bootstrap + CSS | Layout responsivo rápido, com foco do projeto nas regras e na API. |
+| Back-end | Node.js + Express | API REST enxuta, com uma rota por recurso, e o mesmo JavaScript do front-end. |
+| Banco de dados | MySQL (`mysql2`) | Os dados são relacionais: um pedido liga um tutor a um peludo por chaves estrangeiras. |
+| Configuração | dotenv | Credenciais do banco fora do código (`.env`). |
+| Testes | Jest + Supertest · Cypress | Integração da API contra o banco real e fluxo completo no navegador. |
+
+## 🧱 Arquitetura
+
+```mermaid
+flowchart LR
+    V[Visitante / Admin] --> FE[React<br/>área pública · área admin<br/>PrivateRoute]
+    FE -->|HTTP/JSON| API[Express<br/>/peludos · /interessados<br/>/pedidos · /relatorio]
+    API --> DB[(MySQL<br/>peludos · interessados<br/>pedidos_adocao)]
 ```
 
----
+**Modelo de dados:** `interessados 1 ── N pedidos_adocao N ── 1 peludos`
 
-## API REST
-
-Base URL: `http://localhost:3001/api`
+**API REST** (`http://localhost:3001`)
 
 | Recurso | Endpoints |
 |---|---|
@@ -78,165 +82,91 @@ Base URL: `http://localhost:3001/api`
 | `/pedidos` | `GET /` · `GET /:id` · `POST /` · `PUT /:id` · `DELETE /:id` |
 | `/relatorio` | `GET /` · `GET /:id` · `GET /indicadores/resumo` |
 
----
+**Estrutura de pastas**
 
-## Banco de dados
+```
+Cafofo_dos_peludos/
+├── backend/
+│   ├── rotas/          # rotas da API (peludos, interessados, pedidos, relatório)
+│   ├── tests/          # testes de integração (Jest + Supertest)
+│   ├── conexao.js      # conexão com o MySQL
+│   └── server.js       # servidor Express
+├── banco/
+│   └── script_banco_cafofo.sql
+├── cypress/e2e/        # testes de sistema (Cypress)
+└── src/
+    ├── componentes/    # Layout, Navbar e PrivateRoute
+    ├── paginas/        # páginas públicas e administrativas
+    └── utilitarios/    # controle de imagens no localStorage
+```
 
-Banco MySQL `cafofo_dos_peludos`, com três tabelas principais:
+## 💡 Decisões técnicas
 
-| Tabela | Conteúdo |
-|---|---|
-| `peludos` | Dados dos animais disponíveis para adoção |
-| `interessados` | Tutores/interessados em adotar |
-| `pedidos_adocao` | Solicitações de adoção, com chaves estrangeiras para `interessados` e `peludos` |
+- **Relatório com `JOIN` no banco, não no front-end**: o MySQL já relaciona tutor, peludo e pedido numa consulta só; o React só exibe. *Trade-off:* a rota de relatório fica acoplada ao schema.
+- **Testes de integração contra o MySQL real, sem mocks**: pegam erros de SQL, de chave estrangeira e de limite de coluna que um mock esconderia. *Trade-off:* exigem o banco configurado para rodar.
+- **Partição de equivalência e valor-limite** para escolher os casos de teste: ex.: nome com 260 caracteres para estourar o `VARCHAR`, cadastro sem e-mail como classe inválida.
+- **Imagens dos peludos fora do banco**: o MySQL guarda só os dados; as fotos são associadas ao `id` no front-end (`localStorage`), o que manteve o escopo da avaliação. *Trade-off:* as imagens não são compartilhadas entre navegadores; um próximo passo seria um storage de arquivos.
+- **Login simulado no front-end**, como pedia a avaliação, com sessão em `localStorage` e `PrivateRoute`. *Trade-off:* não é autenticação real; o próximo passo é JWT no back-end.
 
-O script de criação está em `banco/script_banco_cafofo.sql`.
+## 🧪 Testes
 
-> **Sobre as imagens:** as fotos dos peludos não são armazenadas no MySQL. O banco guarda apenas os dados principais; as imagens são controladas no front-end via `localStorage` e associadas ao `id` do peludo em `src/utilitarios/storage.js`.
+| Tipo | Ferramenta | Quantidade | O que cobre |
+|---|---|---|---|
+| Integração | Jest + Supertest | 7 | Endpoints da API contra o MySQL: cadastro válido, valor-limite, campos obrigatórios, listagem e relatório |
+| Sistema (E2E) | Cypress | 4 | CRUD de tutores pela interface: formulário vazio, cadastro, edição e exclusão |
 
----
-
-## Testes
-
-O projeto tem duas camadas de testes automatizados: **integração** (API + banco) e **sistema** (fluxo completo no navegador).
-
-### Testes de integração — Jest + Supertest (7 casos)
-
-Executam requisições reais na API e validam as respostas e a persistência no MySQL.
+<details>
+<summary>Casos de teste de integração</summary>
 
 | Arquivo | Caso de teste | Técnica | Resultado esperado |
 |---|---|---|---|
 | `peludos.test.js` | Cadastro de peludo com dados válidos | Caminho feliz | `201` + mensagem de sucesso |
-| `peludos.test.js` | Nome com 260 caracteres (acima do limite do `VARCHAR`) | Valor-limite | Erro (`≥ 400`), sem gravar no banco |
-| `interessados.test.js` | Cadastro com todos os campos obrigatórios | Partição de equivalência (classe válida) | `200/201` + `id` do registro |
-| `interessados.test.js` | Cadastro sem e-mail | Partição de equivalência (classe inválida) | `400` + mensagem de erro |
+| `peludos.test.js` | Nome com 260 caracteres (acima do `VARCHAR`) | Valor-limite | Erro (`≥ 400`), sem gravar no banco |
+| `interessados.test.js` | Cadastro com todos os campos obrigatórios | Partição de equivalência (válida) | `200/201` + `id` |
+| `interessados.test.js` | Cadastro sem e-mail | Partição de equivalência (inválida) | `400` + mensagem de erro |
 | `pedido.test.js` | Listagem de pedidos | Caminho feliz | `200` |
-| `pedido.test.js` | Pedido sem data | Partição de equivalência (classe inválida) | `400` |
-| `pedido.test.js` | Carregamento do relatório (JOIN entre tabelas) | Integração entre entidades | `200` |
+| `pedido.test.js` | Pedido sem data | Partição de equivalência (inválida) | `400` |
+| `pedido.test.js` | Relatório (JOIN entre tabelas) | Integração entre entidades | `200` |
 
-### Testes de sistema (E2E) — Cypress (4 casos)
-
-Simulam o uso real: fazem login com as credenciais de teste e percorrem o CRUD de tutores pela interface.
-
-| # | Caso de teste | Resultado esperado |
-|---|---|---|
-| 1 | Envio do formulário vazio | Alerta de erro: campos obrigatórios |
-| 2 | Cadastro de um interessado | Alerta de sucesso: interessado cadastrado |
-| 3 | Edição do interessado cadastrado | Alerta de sucesso: registro atualizado |
-| 4 | Exclusão do interessado | Alerta de sucesso: registro excluído |
-
-### Como executar os testes
-
-> Os testes usam o banco MySQL real. Antes de rodá-los, configure o banco e o `.env` (ver [Como executar o projeto](#como-executar-o-projeto)).
-
-**Integração (pasta `backend`):**
+</details>
 
 ```bash
-cd backend
-npm test                 # executa os testes
-npm run test:coverage    # executa e gera o relatório de cobertura
+cd backend && npm test          # integração (precisa do MySQL e do .env)
+npx cypress run                 # E2E, na pasta principal, com back e front rodando
 ```
 
-**E2E (pasta principal):** com o back-end e o front-end rodando:
+## 🚀 Como rodar localmente
+
+**Pré-requisitos:** Node.js e MySQL.
 
 ```bash
-npx cypress open   # modo interativo
-npx cypress run    # modo headless (terminal)
-```
-
-> Se o Cypress ainda não estiver instalado na máquina: `npm install --save-dev cypress`.
-
----
-
-## Como executar o projeto
-
-**Pré-requisitos:** Node.js e MySQL instalados.
-
-### 1. Clonar o repositório
-
-```bash
+# 1. Clonar e instalar
 git clone https://github.com/diegoomarcelo/Cafofo_dos_peludos.git
 cd Cafofo_dos_peludos
-```
+npm install                     # front-end
+cd backend && npm install       # back-end
 
-### 2. Instalar as dependências
+# 2. Banco: execute no MySQL o script banco/script_banco_cafofo.sql
 
-```bash
-npm install            # front-end (pasta principal)
-cd backend
-npm install            # back-end
-```
+# 3. Variáveis de ambiente
+cp env.example .env             # preencha DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT e PORT=3001
 
-### 3. Criar o banco de dados
-
-Execute no MySQL o script `banco/script_banco_cafofo.sql`.
-
-### 4. Configurar o `.env`
-
-Na pasta `backend`, crie um arquivo `.env` com base no `env.example`:
-
-```env
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=sua_senha
-DB_NAME=cafofo_dos_peludos
-DB_PORT=3306
-PORT=3001
-```
-
-### 5. Rodar o back-end
-
-```bash
-cd backend
+# 4. Back-end (em backend/)
 npm run dev
-```
 
-### 6. Rodar o front-end
-
-Em outro terminal, na pasta principal:
-
-```bash
+# 5. Front-end (em outro terminal, na pasta principal)
 npm start
 ```
 
-A aplicação abre em `http://localhost:3000` e a API responde em `http://localhost:3001`.
+O front abre em `http://localhost:3000` e a API responde em `http://localhost:3001`.
 
----
+## 🗺️ Próximos passos
 
-## Estrutura do projeto
+- [ ] Autenticação real no back-end (JWT + senha com hash).
+- [ ] Upload de imagens dos peludos para um storage, em vez do `localStorage`.
+- [ ] Ampliar os testes de integração para as rotas de atualização e exclusão.
 
-```txt
-Cafofo_dos_peludos/
-├── backend/
-│   ├── rotas/          # Rotas da API (peludos, interessados, pedidos, relatório)
-│   ├── tests/          # Testes de integração (Jest + Supertest)
-│   ├── conexao.js      # Conexão com o MySQL
-│   └── server.js       # Servidor Express
-├── banco/
-│   └── script_banco_cafofo.sql
-├── cypress/
-│   └── e2e/            # Testes de sistema (Cypress)
-└── src/
-    ├── componentes/    # Layout, Navbar e PrivateRoute
-    ├── paginas/        # Páginas públicas e administrativas
-    └── utilitarios/    # Controle de imagens no localStorage
-```
+## 👤 Autor
 
----
-
-## Requisitos da avaliação atendidos
-
-- Sistema de login, controle de sessão, logout e proteção de rotas
-- Três CRUDs completos com persistência dos dados
-- Relatório com dados relacionados entre entidades
-- Uso de `useState` e de `map()` nas listagens
-- Código organizado em páginas, componentes e utilitários
-- Testes automatizados de integração e de sistema
-
----
-
-## Autor
-
-**Diego Marcelo de Sousa** — Estudante de Ciência da Computação (UCB)
-
-[LinkedIn](https://www.linkedin.com/in/diegomarcelo) · [GitHub](https://github.com/diegoomarcelo)
+**Diego Marcelo**, Desenvolvimento de Software e Dados
+[LinkedIn](https://linkedin.com/in/diegomarcelo) · [GitHub](https://github.com/diegoomarcelo) · diegoomarcelo@gmail.com
