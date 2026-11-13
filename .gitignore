@@ -8,8 +8,7 @@ backend/node_modules
 backend/.env
 
 # testing
-/coverage
-
+coverage/
 # production
 /build
 
